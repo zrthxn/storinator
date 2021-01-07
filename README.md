@@ -1,4 +1,4 @@
-# KeyStoreDB
+# Storinator DB
 **A small-time key-value based DB written in Rust.**
 
 Aims to provide extremely fast DBaaS for your projects without the need to setup a 
