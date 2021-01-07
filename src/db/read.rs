@@ -1,6 +1,6 @@
 use std::fs;
-use std::time::{Duration, Instant};
-use serde_json::{Result, Value, json};
+use std::time::{Instant};
+use serde_json::{Value, json};
 
 /// Test
 pub fn read_db() {

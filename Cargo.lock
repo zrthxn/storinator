@@ -1625,6 +1625,7 @@ name = "storinator"
 version = "0.1.0"
 dependencies = [
  "actix-web",
+ "arrayvec",
  "color-eyre",
  "config",
  "dotenv",

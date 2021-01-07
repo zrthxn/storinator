@@ -1,3 +1,5 @@
+pub mod token;
+
 // pub struct Request {
   
 // }
@@ -23,3 +25,10 @@
 
 // // READ uuid FROM users WHERE accountAge > 3000 AND userAge < 50
 // // WRITE username = 'deleted' TO users WHERE uuid # ['...', '...', '...', '...']
+
+pub fn test() {
+  let testtoken = "test";
+  let tok = token::Token::from_str(&testtoken, 0, 0);
+
+  println!("The token is {}", tok.term());
+}

@@ -5,6 +5,7 @@
 mod config;
 mod routes;
 mod db;
+mod api;
 
 use actix_web::{App, HttpServer, middleware::Logger};
 use color_eyre::Result;
