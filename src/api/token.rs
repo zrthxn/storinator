@@ -1,4 +1,3 @@
-// use std::ops::A
 use arrayvec::ArrayString;
 
 const MAX_STACK_TERM_LEN: usize = 15;

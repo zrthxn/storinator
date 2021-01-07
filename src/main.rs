@@ -11,7 +11,7 @@ use actix_web::{App, HttpServer, middleware::Logger};
 use color_eyre::Result;
 
 use crate::config::Config;
-use routes::router;
+use crate::routes::router;
 
 #[actix_web::main]
 async fn main() -> Result<()> {
