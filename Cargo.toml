@@ -1,5 +1,5 @@
 [package]
-name = "dkeystore"
+name = "storinator"
 version = "0.1.0"
 authors = ["Alisamar Husain <zrthxn@gmail.com>"]
 edition = "2018"

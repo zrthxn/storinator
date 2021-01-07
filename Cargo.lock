@@ -568,21 +568,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "212d0f5754cb6769937f4501cc0e67f4f4483c8d2c3e1e922ee9edbe4ab4c7c0"
 
 [[package]]
-name = "dkeystore"
-version = "0.1.0"
-dependencies = [
- "actix-web",
- "color-eyre",
- "config",
- "dotenv",
- "eyre",
- "serde 1.0.118",
- "serde_json",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "dotenv"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1634,6 +1619,21 @@ name = "stdweb-internal-runtime"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "213701ba3370744dcd1a12960caa4843b3d68b4d1c0a5d575e0d65b2ee9d16c0"
+
+[[package]]
+name = "storinator"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "color-eyre",
+ "config",
+ "dotenv",
+ "eyre",
+ "serde 1.0.118",
+ "serde_json",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "syn"
