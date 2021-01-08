@@ -100,6 +100,10 @@ impl<'a> Iterator for CharTokenizer<'a> {
   }
 }
 
+// impl Copy for CharTokenizer {
+
+// }
+
 /// Whitespace tokenizer using the CharTokenIter
 pub struct WhitespaceTokenizer;
 
@@ -113,4 +117,10 @@ impl<'wt> WhitespaceTokenizer {
 fn is_whitespace(input: &(usize, (usize, char))) -> bool {
   let (_, (_, c)) = *input;
   c.is_whitespace()
+}
+
+pub struct KeywordTokenizer;
+
+impl<'kt> KeywordTokenizer {
+  
 }

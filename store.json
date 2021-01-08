@@ -1,10 +1,1 @@
-{
-  "store": {
-    "$schema": {
-
-    },
-    "data": {
-
-    }
-  }
-}
+{"store":{"$schema":{},"data":{"uuid":{}}}}

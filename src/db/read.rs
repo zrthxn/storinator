@@ -19,3 +19,11 @@ pub fn read_db() {
 
   println!("{:?} elapsed in file op", start.elapsed());
 }
+
+pub fn find_where() {
+
+}
+
+pub fn find_ref() {
+
+}
