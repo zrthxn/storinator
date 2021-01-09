@@ -1,6 +1,5 @@
 use crate::db::Collection;
 use crate::api::token::Token;
-use crate::api::Modifier;
 
 /// Properties that Verbs must have
 pub trait Executable {
@@ -11,6 +10,7 @@ pub struct Read;
 
 impl Executable for Read {
   fn exec(target: Vec<Token>) -> Collection {
+    println!("DB READ");
     Collection {}
   }
 }
@@ -19,6 +19,7 @@ pub struct Write;
 
 impl Executable for Write {
   fn exec(target: Vec<Token>) -> Collection {
+    println!("DB WRITE");
     Collection {}
   }
 }
@@ -27,6 +28,7 @@ pub struct Delete;
 
 impl Executable for Delete {
   fn exec(target: Vec<Token>) -> Collection {
+    println!("DB DELETE");
     Collection {}
   }
 }
@@ -50,19 +52,27 @@ impl Verb {
 
 impl PartialEq for Verb {
   fn eq(&self, other: &Self) -> bool {
-    if self == other {
-      true
-    } else {
-      false
+    match self {
+      other => true,
+      _ => false
     }
+    // if self == other {
+    //   true
+    // } else {
+    //   false
+    // }
   }
 
   fn ne(&self, other: &Self) -> bool {
-    if self == other {
-      false
-    } else {
-      true
+    match self {
+      other => false,
+      _ => true
     }
+    // if self == other {
+    //   false
+    // } else {
+    //   true
+    // }
   }
 }
 
@@ -74,18 +84,26 @@ pub enum Specifier {
 
 impl PartialEq for Specifier {
   fn eq(&self, other: &Self) -> bool {
-    if self == other {
-      true
-    } else {
-      false
+    match self {
+      other => true,
+      _ => false
     }
+    // if self == other {
+    //   true
+    // } else {
+    //   false
+    // }
   }
 
   fn ne(&self, other: &Self) -> bool {
-    if self == other {
-      false
-    } else {
-      true
+    match self {
+      other => false,
+      _ => true
     }
+    // if self == other {
+    //   false
+    // } else {
+    //   true
+    // }
   }
 }

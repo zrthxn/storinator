@@ -1,7 +1,6 @@
 use tracing::{info, instrument};
 use crate::api::token::{Token, WhitespaceTokenizer, CharTokenizer};
 use crate::api::{Query, Action, Modifier, verbs::{Verb, Specifier}};
-use crate::api::verbs::{Read, Write, Delete};
 
 pub struct QueryParser<'q> {
   query: &'q str,
@@ -23,9 +22,7 @@ impl<'q> QueryParser<'q> {
     let mut _action = Action::new(Verb::NOP, Vec::new(), Vec::new());
     let mut _modif = Modifier::new(Specifier::NOP, Vec::new());
 
-    for item in self.tokens {
-      println!("{}", item.term());
-      
+    for item in self.tokens {      
       if is_verb(&item) {
         if _action.verb != Verb::NOP {
           _action.target = _target;
@@ -37,7 +34,9 @@ impl<'q> QueryParser<'q> {
 
         _action.verb = verb_from_token(&item);
         continue;
-      } else if is_mod(&item) {
+      } 
+      
+      if is_mod(&item) {
         if _modif.spec != Specifier::NOP {
           _modif.filter = _target;
           _action.modifiers.push(_modif);
@@ -48,10 +47,20 @@ impl<'q> QueryParser<'q> {
 
         _modif.spec = mod_from_token(&item);
         continue;
-      } else {
-        _target.push(item);
-      }
+      } 
+      
+      _target.push(item);
     }
+
+    // if _modif.spec != Specifier::NOP {
+    //   _modif.filter.copy_from_slice(&_target);
+    //   _action.modifiers.push(_modif);
+    // }
+
+    // if _action.verb != Verb::NOP {
+    //   _action.target.copy_from_slice(&_target);
+    //   actions.push(_action);
+    // }
 
     Query {
       request: self.query,
@@ -66,6 +75,7 @@ fn is_verb(item: &Token) -> bool {
     "READ" => true,
     "WRITE" => true,
     "DELETE" => true,
+    "END" => true,
     _ => false
   }
 }

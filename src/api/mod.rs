@@ -37,10 +37,12 @@ pub struct Query<'q> {
 
 impl<'q> Query<'q> {
   pub fn execute(self) {
-    info!("Executing query {}", self.request);
+    info!("Executing {} actions", self.actions.len());
+    info!("{}", self.request);
 
     for action in self.actions {
       action.verb.exec(action.target);
+      // println!("{}")
     }
   }
 }
