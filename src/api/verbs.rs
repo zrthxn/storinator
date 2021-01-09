@@ -10,7 +10,7 @@ pub struct Read;
 
 impl Executable for Read {
   fn exec(target: Vec<Token>) -> Collection {
-    println!("DB READ");
+    // println!("DB READ");
     Collection {}
   }
 }
@@ -50,60 +50,8 @@ impl Verb {
   }
 }
 
-impl PartialEq for Verb {
-  fn eq(&self, other: &Self) -> bool {
-    match self {
-      other => true,
-      _ => false
-    }
-    // if self == other {
-    //   true
-    // } else {
-    //   false
-    // }
-  }
-
-  fn ne(&self, other: &Self) -> bool {
-    match self {
-      other => false,
-      _ => true
-    }
-    // if self == other {
-    //   false
-    // } else {
-    //   true
-    // }
-  }
-}
-
-
+/// Encapsulating all Modifiers
 pub enum Specifier {
   TO, FROM, IN, AT, WHERE, LIMIT, 
   NOP
-}
-
-impl PartialEq for Specifier {
-  fn eq(&self, other: &Self) -> bool {
-    match self {
-      other => true,
-      _ => false
-    }
-    // if self == other {
-    //   true
-    // } else {
-    //   false
-    // }
-  }
-
-  fn ne(&self, other: &Self) -> bool {
-    match self {
-      other => false,
-      _ => true
-    }
-    // if self == other {
-    //   false
-    // } else {
-    //   true
-    // }
-  }
 }

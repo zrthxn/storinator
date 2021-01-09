@@ -2,8 +2,6 @@ pub mod token;
 pub mod parser;
 pub mod verbs;
 
-use std::time::Instant;
-
 use tracing::{info, instrument};
 use parser::QueryParser;
 use verbs::{Verb, Specifier};
@@ -39,28 +37,22 @@ pub struct Query<'q> {
 
 impl<'q> Query<'q> {
   pub fn execute(self) {
-    info!("Executing {} actions", self.actions.len());
-    info!("{}", self.request);
-
     for action in self.actions {
       action.verb.exec(action.target);
-      // println!("{}")
     }
   }
 }
 
 #[instrument]
 pub fn execute(query: &str) {
-  info!("Building query");
+  let start = std::time::Instant::now();
 
-  let start = Instant::now();
-  
   let parser = QueryParser::new(query);
   let sequence = parser.build();
 
   sequence.execute();
-  
-  println!("{:?} elapsed in query builder", start.elapsed());
+
+  println!("{:?} elapsed in query exec", start.elapsed());
 }
 
 // pub enum TOKENS {

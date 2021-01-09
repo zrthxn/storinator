@@ -17,10 +17,6 @@ impl<'q> QueryParser<'q> {
 
   pub fn build(self) -> Query<'q> {
     let mut actions: Vec<Action> = Vec::new();
-    
-    let mut _action = Action::new(Verb::NOP, Vec::new(), Vec::new());
-    let mut _mod = Modifier::new(Specifier::NOP, Vec::new());
-    
     let mut _target: &mut Vec<Token> = &mut Vec::new();
 
     for item in self.tokens {
@@ -49,9 +45,9 @@ impl<'q> QueryParser<'q> {
 #[inline]
 fn is_verb(item: &Token) -> bool {
   match item.term() {
-    "READ" => true,
-    "WRITE" => true,
-    "DELETE" => true,
+    "READ"    => true,
+    "WRITE"   => true,
+    "DELETE"  => true,
     _ => false
   }
 }
@@ -67,9 +63,9 @@ fn is_mod(item: &Token) -> bool {
 impl Verb {
   fn from_token(item: &Token) -> Self {
     match item.term() {
-      "READ" => Verb::READ,
-      "WRITE" => Verb::WRITE,
-      "DELETE" => Verb::DELETE,
+      "READ"    => Verb::READ,
+      "WRITE"   => Verb::WRITE,
+      "DELETE"  => Verb::DELETE,
       _ => Verb::NOP
     }
   }
@@ -78,7 +74,12 @@ impl Verb {
 impl Specifier {
   fn from_token(item: &Token) -> Self {
     match item.term() {
-      "FROM" => Specifier::FROM,
+      "TO"    => Specifier::TO,
+      "FROM"  => Specifier::FROM,
+      "AT"    => Specifier::AT,
+      "IN"    => Specifier::IN,
+      "WHERE" => Specifier::WHERE,
+      "LIMIT" => Specifier::LIMIT,
       _ => Specifier::NOP
     }
   }
