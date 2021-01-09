@@ -5,5 +5,5 @@ pub trait Findable {
 }
 
 pub struct Collection {
-  id: String
+  
 }

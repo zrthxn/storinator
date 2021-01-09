@@ -1,32 +1,67 @@
 pub mod token;
 pub mod parser;
+pub mod verbs;
 
 use tracing::{info, instrument};
-use token::WhitespaceTokenizer;
 use parser::QueryParser;
+use verbs::{Verb, Specifier};
+use token::{Token};
 
-pub enum Verb {
-  READ, WRITE, DELETE, JOIN
+pub struct Action {
+  verb: Verb,
+  target: Vec<Token>,
+  modifiers: Vec<Modifier>
 }
 
-pub enum Specifier {
-  TO, FROM, IN, AT
+impl Action {
+  pub fn new(verb: Verb, target: Vec<Token>, mods: Vec<Modifier>) -> Self {
+    Action { verb: verb, target: target, modifiers: mods }
+  }
 }
 
-pub enum Modifier {
-  WHERE, LIMIT
+pub struct Modifier {
+  spec: Specifier,
+  filter: Vec<Token>
+}
+
+impl Modifier {
+  pub fn new(spec: Specifier, filter: Vec<Token>) -> Self {
+    Modifier { spec: spec, filter: filter }
+  }
 }
 
 pub struct Query<'q> {
-  reqest: &'q str,
-  action: Verb,
+  request: &'q str,
+  actions: Vec<Action>
+}
+
+impl<'q> Query<'q> {
+  pub fn execute(self) {
+    info!("Executing query {}", self.request);
+
+    for action in self.actions {
+      action.verb.exec(action.target);
+    }
+  }
+}
+
+#[instrument]
+pub fn execute(query: &str) {
+  info!("Building query");
+
+  let parser = QueryParser::new(query);
+  let sequence = parser.build();
+
+  sequence.execute();
 }
 
 // pub enum TOKENS {
-//   WRITE D TO C
-//   READ D FROM C WHERE Q LIMIT L
-//   UPDATE D IN C WHERE Q LIMIT L
-//   DELETE D FROM C WHERE Q LIMIT L
+//   WRITE doc TO collection 
+//   READ doc FROM collection WHERE Q LIMIT L
+//   READ doc FROM collection.key WHERE Q LIMIT L
+//   UPDATE doc IN collection WHERE Q LIMIT L
+//   UPDATE doc IN collection.key WHERE Q LIMIT L
+//   DELETE doc FROM collection WHERE Q LIMIT L
 
 //   VERB (REF) LOCATOR (REF) QUERY
 
@@ -37,15 +72,3 @@ pub struct Query<'q> {
 
 // // READ uuid FROM users WHERE accountAge > 3000 AND userAge < 50
 // // WRITE username = 'deleted' TO users WHERE uuid # ['...', '...', '...', '...']
-
-#[instrument]
-pub fn execute() {
-  info!("Executing query");
-  let testtoken = "test";
-  let tok = token::Token::from_str(&testtoken, 0, 0);
-  println!("The token is {}", tok.term());
-
-  let reqst = "READ D FROM C WHERE Q";
-  let parse = QueryParser::new(reqst);
-  parse.build();
-}
