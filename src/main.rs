@@ -2,25 +2,36 @@
  * @info
  */
 
-mod config;
-mod routes;
 mod db;
 mod api;
+mod configs;
+mod routes;
 
-use actix_web::{App, HttpServer, middleware::Logger};
+use std::sync::Mutex;
+
+use actix_web::{App, HttpServer, middleware::Logger, web};
 use color_eyre::Result;
 
-use crate::config::Config;
+use db::DataStore;
+use configs::Config;
 use crate::routes::router;
 
 #[actix_web::main]
 async fn main() -> Result<()> {
 	let server = Config::loadenv()
-		.expect("Server bind configuration");
+		.expect("Server configuration missing");
 
-	HttpServer::new(|| {
+	let data = std::fs::read_to_string(server.path)
+    .expect("Error in reading datastore");
+
+	HttpServer::new(move || {
 		App::new()
 			.wrap(Logger::default())
+			.app_data(web::Data::new(
+				DataStore {
+					store: Mutex::new(serde_json::from_str(&data).unwrap())
+				}
+			))
 			.configure(router)
 	})
 		.bind((server.host, server.port))?

@@ -1,4 +1,3 @@
-use tracing::{info, instrument};
 use crate::api::token::{Token, WhitespaceTokenizer, CharTokenizer};
 use crate::api::{Query, Action, Modifier, verbs::{Verb, Specifier}};
 
@@ -24,7 +23,7 @@ impl<'q> QueryParser<'q> {
         actions.push(
           Action::new(Verb::from_token(&item), Vec::new(), Vec::new())
         );
-        _target = &mut (actions.last_mut().unwrap()).target;
+        _target = &mut (actions.last_mut().unwrap()).keys;
       } else if is_mod(&item) {
         (actions.last_mut().unwrap()).modifiers.push(
           Modifier::new(Specifier::from_token(&item), Vec::new())
@@ -55,7 +54,12 @@ fn is_verb(item: &Token) -> bool {
 #[inline]
 fn is_mod(item: &Token) -> bool {
   match item.term() {
-    "FROM" => true,
+    "TO"    => true,
+    "FROM"  => true,
+    "AT"    => true,
+    "IN"    => true,
+    "WHERE" => true,
+    "LIMIT" => true,
     _ => false
   }
 }

@@ -4,18 +4,20 @@ pub mod verbs;
 
 use tracing::{info, instrument};
 use parser::QueryParser;
-use verbs::{Verb, Specifier};
+use verbs::{Verb, Specifier, Executable};
 use token::{Token};
+
+use crate::db::Collection;
 
 pub struct Action {
   verb: Verb,
-  target: Vec<Token>,
+  keys: Vec<Token>,
   modifiers: Vec<Modifier>
 }
 
 impl Action {
-  pub fn new(verb: Verb, target: Vec<Token>, mods: Vec<Modifier>) -> Self {
-    Action { verb: verb, target: target, modifiers: mods }
+  pub fn new(verb: Verb, keys: Vec<Token>, mods: Vec<Modifier>) -> Self {
+    Action { verb: verb, keys: keys, modifiers: mods }
   }
 }
 
@@ -30,6 +32,7 @@ impl Modifier {
   }
 }
 
+/// Query structure for DB interaction
 pub struct Query<'q> {
   request: &'q str,
   actions: Vec<Action>
@@ -37,22 +40,23 @@ pub struct Query<'q> {
 
 impl<'q> Query<'q> {
   pub fn execute(self) {
+    // + sort actions by order of predecence
+
+    let mut collection = Collection::new("result");
+    
     for action in self.actions {
-      action.verb.exec(action.target);
+      for modifier in action.modifiers {
+        modifier.spec.exec(&modifier.filter, &mut collection);
+      }
+      action.verb.exec(&action.keys, &mut collection);
     }
   }
 }
 
 #[instrument]
-pub fn execute(query: &str) {
-  let start = std::time::Instant::now();
-
+pub fn parse(query: &str) -> Query {
   let parser = QueryParser::new(query);
-  let sequence = parser.build();
-
-  sequence.execute();
-
-  println!("{:?} elapsed in query exec", start.elapsed());
+  parser.build()
 }
 
 // pub enum TOKENS {
