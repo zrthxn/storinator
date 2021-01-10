@@ -1,34 +1,16 @@
-use crate::db::Collection;
+use std::sync::Mutex;
+use serde_json::Value;
+
 use crate::api::token::Token;
+use crate::db::Collection;
+use crate::db::read::Read;
+use crate::db::write::{Write, Delete};
 
 /// Properties that Verbs must have
 pub trait Executable {
   // fn exec(&self, t: Vec<Token>) -> Collection;
-  fn exec(&self, filter: &Vec<Token>, target: &mut Collection) -> Collection;
-}
-
-pub struct Read;
-
-impl Executable for Read {
-  fn exec(&self, keys: &Vec<Token>, tar: &mut Collection) -> Collection {
-    Collection::empty()
-  }
-}
-
-pub struct Write;
-
-impl Executable for Write {
-  fn exec(&self, keys: &Vec<Token>, tar: &mut Collection) -> Collection {
-    Collection::empty()
-  }
-}
-
-pub struct Delete;
-
-impl Executable for Delete {
-  fn exec(&self, keys: &Vec<Token>, tar: &mut Collection) -> Collection {
-    Collection::empty()
-  }
+  fn exec(&self, filter: &Vec<Token>, target: &mut Collection);
+  // fn exec(&self, source: &Mutex<Value>, filter: &Vec<Token>, target: &mut Collection) -> Collection;
 }
 
 /// Encapsulating all Verbs
@@ -38,12 +20,12 @@ pub enum Verb {
 }
 
 impl Executable for Verb {
-  fn exec(&self, f: &Vec<Token>, t: &mut Collection) -> Collection {
+  fn exec(&self, f: &Vec<Token>, t: &mut Collection) {
     match self {
       Self::READ    => Read.exec(f, t),
       Self::WRITE   => Write.exec(f, t),
       Self::DELETE  => Delete.exec(f, t),
-      _ => Collection::empty()
+      _ => ()
     }
   }
 }
@@ -55,10 +37,10 @@ pub enum Specifier {
 }
 
 impl Executable for Specifier {
-  fn exec(&self, f: &Vec<Token>, t: &mut Collection) -> Collection {
+  fn exec(&self, f: &Vec<Token>, t: &mut Collection) {
     match self {
-      Self::FROM => Collection::empty(),
-      _ => Collection::empty()
+      Self::FROM => Read.from_collection(f, t),
+      _ => ()
     }
   }
 }

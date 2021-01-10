@@ -1,35 +1,43 @@
 pub mod read;
+pub mod write;
 
-use std::{fs, str::FromStr, sync::Mutex};
-use serde_json::Value;
+use std::{str::FromStr, sync::Mutex};
+use actix_web::web;
+use serde_json::{Value, json};
 use serde::Deserialize;
-use crate::api::Query; 
+
+use crate::api::Query;
 
 #[derive(Deserialize)]
 pub struct DataStore {
-  pub store: Mutex<serde_json::Value>
+  pub store: Mutex<Value>
 }
 
-pub struct Collection {
+pub struct Collection<'c> {
   key: String,
-  // data: Vec<String>
+  val: &'c mut Value
 }
 
-impl Collection {
-  pub fn new(key: &str) -> Self {
+impl<'c> Collection<'c> {
+  pub fn new(key: &'c str, value: &'c mut Value) -> Self {
     Collection {
-      key: String::from_str(key).unwrap() 
+      key: String::from_str(key).unwrap(),
+      val: value
     }
   }
 
-  pub fn empty() -> Self {
-    Collection {
-      key: String::from_str("").unwrap()
-    }
-  }
+  // pub fn empty() -> Self {
+  //   Collection {
+  //     key: String::from_str("").unwrap(),
+  //     val: &mut Value::from_str("{}").unwrap()
+  //   }
+  // }
 }
 
-pub fn execute(query: Query, store: &Mutex<Value>) -> Collection {
+pub fn execute<'e>(query: &Query, store: &Mutex<Value>) {
+  let lock = &mut *store.lock().unwrap();
+  let mut base = Collection::new("result", lock);
 
-  Collection::empty()
+  (*query).run(&mut base);
+  // return base.val;
 }

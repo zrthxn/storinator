@@ -23,7 +23,7 @@ impl<'q> QueryParser<'q> {
         actions.push(
           Action::new(Verb::from_token(&item), Vec::new(), Vec::new())
         );
-        _target = &mut (actions.last_mut().unwrap()).keys;
+        _target = &mut (actions.last_mut().unwrap()).filter;
       } else if is_mod(&item) {
         (actions.last_mut().unwrap()).modifiers.push(
           Modifier::new(Specifier::from_token(&item), Vec::new())

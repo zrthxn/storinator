@@ -1,28 +1,24 @@
 use std::fs;
+use std::sync::Mutex;
 use std::time::{Instant};
-use serde_json::{Value, json};
+use serde_json::Value;
 
-/// Test
-pub fn read_db() {
-  let start1 = Instant::now();
+use crate::api::{token::Token, verbs::Executable};
 
-  let data = json!({
-    "uuid": {  }
-  });
-  
-  let raw = fs::read_to_string("store.json")
-    .expect("Error in reading file");
+use super::Collection;
 
-  let start2 = Instant::now();
-  let mut keys: Value = serde_json::from_str(&raw).unwrap();
-  keys["store"]["data"] = data;
-  println!("{:?} elapsed in mem op", start2.elapsed());
+pub struct Read;
 
-  fs::write("store.json", keys.to_string()).unwrap();
-
-  println!("{:?} elapsed in file op", start1.elapsed());
+impl Executable for Read {
+  fn exec(&self, keys: &Vec<Token>, tar: &mut Collection) {
+    
+  }
 }
 
-pub fn read_key() {
-  
+impl Read {
+  pub fn from_collection(&self, key: &Vec<Token>, tar: &mut Collection) {
+    if key.len() > 1 {
+      // Err("More than one values for `collection`");
+    }
+  } 
 }

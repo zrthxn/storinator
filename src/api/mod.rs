@@ -2,6 +2,8 @@ pub mod token;
 pub mod parser;
 pub mod verbs;
 
+use std::sync::Mutex;
+use serde_json::Value;
 use tracing::{info, instrument};
 use parser::QueryParser;
 use verbs::{Verb, Specifier, Executable};
@@ -11,13 +13,13 @@ use crate::db::Collection;
 
 pub struct Action {
   verb: Verb,
-  keys: Vec<Token>,
+  filter: Vec<Token>,
   modifiers: Vec<Modifier>
 }
 
 impl Action {
-  pub fn new(verb: Verb, keys: Vec<Token>, mods: Vec<Modifier>) -> Self {
-    Action { verb: verb, keys: keys, modifiers: mods }
+  pub fn new(verb: Verb, filter: Vec<Token>, mods: Vec<Modifier>) -> Self {
+    Action { verb: verb, filter: filter, modifiers: mods }
   }
 }
 
@@ -39,16 +41,14 @@ pub struct Query<'q> {
 }
 
 impl<'q> Query<'q> {
-  pub fn execute(self) {
+  pub fn run(self, collection: &mut Collection) {
     // + sort actions by order of predecence
-
-    let mut collection = Collection::new("result");
     
     for action in self.actions {
       for modifier in action.modifiers {
-        modifier.spec.exec(&modifier.filter, &mut collection);
+        modifier.spec.exec(&modifier.filter, collection);
       }
-      action.verb.exec(&action.keys, &mut collection);
+      action.verb.exec(&action.filter, collection);
     }
   }
 }
