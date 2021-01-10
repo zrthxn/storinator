@@ -8,18 +8,18 @@ enum Term {
 
 /// Properties of a Token
 pub struct Token {
-  term: Term,
-  position: usize,
-  offset: usize,
+  term: Term
+  // position: usize,
+  // offset: usize
 }
 
 impl Token {
   #[inline]
-  pub fn from_str(term: &str, position: usize, offset: usize) -> Self {
+  pub fn from_str(term: &str, _position: usize, _offset: usize) -> Self {
     Token {
       term: Token::convert_term(term),
-      position: position,
-      offset: offset
+      // position: position,
+      // offset: offset
     }
   }
 
@@ -119,8 +119,8 @@ fn is_whitespace(input: &(usize, (usize, char))) -> bool {
   c.is_whitespace()
 }
 
-pub struct KeywordTokenizer;
+// pub struct KeywordTokenizer;
 
-impl<'kt> KeywordTokenizer {
+// impl<'kt> KeywordTokenizer {
   
-}
+// }

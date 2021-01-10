@@ -2,9 +2,7 @@ pub mod token;
 pub mod parser;
 pub mod verbs;
 
-use std::sync::Mutex;
 use serde_json::Value;
-use tracing::{info, instrument};
 use parser::QueryParser;
 use verbs::{Verb, Specifier, Executable};
 use token::{Token};
@@ -53,7 +51,6 @@ impl Query {
   }
 }
 
-#[instrument]
 pub fn parse(query: &str) -> Query {
   let parser = QueryParser::new(query);
   parser.build()

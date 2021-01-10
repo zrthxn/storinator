@@ -1,4 +1,3 @@
-use std::sync::Mutex;
 use serde_json::Value;
 
 use crate::api::token::Token;

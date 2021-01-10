@@ -1,6 +1,3 @@
-use std::fs;
-use std::sync::Mutex;
-use std::time::{Instant};
 use serde_json::Value;
 
 use crate::api::{token::Token, verbs::Executable};
@@ -11,7 +8,7 @@ pub struct Read;
 
 impl Executable for Read {
   fn exec(&self, src: &mut Value, keys: &Vec<Token>, tar: &mut Collection) {
-    
+    tar.val = src["data"].clone();
   }
 }
 

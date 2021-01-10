@@ -21,7 +21,7 @@ async fn main() -> Result<()> {
 	let server = Config::loadenv()
 		.expect("Server configuration missing");
 
-	let data = std::fs::read_to_string(server.path)
+	let data = std::fs::read_to_string("store.json")
     .expect("Error in reading datastore");
 
 	HttpServer::new(move || {
