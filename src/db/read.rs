@@ -10,13 +10,13 @@ use super::Collection;
 pub struct Read;
 
 impl Executable for Read {
-  fn exec(&self, keys: &Vec<Token>, tar: &mut Collection) {
+  fn exec(&self, src: &mut Value, keys: &Vec<Token>, tar: &mut Collection) {
     
   }
 }
 
 impl Read {
-  pub fn from_collection(&self, key: &Vec<Token>, tar: &mut Collection) {
+  pub fn from_collection(&self, src: &mut Value, key: &Vec<Token>, tar: &mut Collection) {
     if key.len() > 1 {
       // Err("More than one values for `collection`");
     }

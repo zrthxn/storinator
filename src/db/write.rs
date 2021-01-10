@@ -7,7 +7,7 @@ use super::Collection;
 pub struct Write;
 
 impl Executable for Write {
-  fn exec(&self, keys: &Vec<Token>, tar: &mut Collection) {
+  fn exec(&self, src: &mut Value, key: &Vec<Token>, tar: &mut Collection) {
     
   }
 }
@@ -15,7 +15,7 @@ impl Executable for Write {
 pub struct Delete;
 
 impl Executable for Delete {
-  fn exec(&self, keys: &Vec<Token>, tar: &mut Collection) {
+  fn exec(&self, src: &mut Value, key: &Vec<Token>, tar: &mut Collection) {
 
   }
 }

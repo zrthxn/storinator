@@ -35,20 +35,20 @@ impl Modifier {
 }
 
 /// Query structure for DB interaction
-pub struct Query<'q> {
-  request: &'q str,
+pub struct Query {
+  request: String,
   actions: Vec<Action>
 }
 
-impl<'q> Query<'q> {
-  pub fn run(self, collection: &mut Collection) {
+impl Query {
+  pub fn run(self, source: &mut Value, collection: &mut Collection) {
     // + sort actions by order of predecence
     
     for action in self.actions {
       for modifier in action.modifiers {
-        modifier.spec.exec(&modifier.filter, collection);
+        modifier.spec.exec(source, &modifier.filter, collection);
       }
-      action.verb.exec(&action.filter, collection);
+      action.verb.exec(source, &action.filter, collection);
     }
   }
 }

@@ -8,9 +8,7 @@ use crate::db::write::{Write, Delete};
 
 /// Properties that Verbs must have
 pub trait Executable {
-  // fn exec(&self, t: Vec<Token>) -> Collection;
-  fn exec(&self, filter: &Vec<Token>, target: &mut Collection);
-  // fn exec(&self, source: &Mutex<Value>, filter: &Vec<Token>, target: &mut Collection) -> Collection;
+  fn exec(&self, source: &mut Value, filter: &Vec<Token>, target: &mut Collection);
 }
 
 /// Encapsulating all Verbs
@@ -20,11 +18,11 @@ pub enum Verb {
 }
 
 impl Executable for Verb {
-  fn exec(&self, f: &Vec<Token>, t: &mut Collection) {
+  fn exec(&self, s: &mut Value, f: &Vec<Token>, t: &mut Collection) {
     match self {
-      Self::READ    => Read.exec(f, t),
-      Self::WRITE   => Write.exec(f, t),
-      Self::DELETE  => Delete.exec(f, t),
+      Self::READ    => Read.exec(s, f, t),
+      Self::WRITE   => Write.exec(s, f, t),
+      Self::DELETE  => Delete.exec(s, f, t),
       _ => ()
     }
   }
@@ -37,9 +35,9 @@ pub enum Specifier {
 }
 
 impl Executable for Specifier {
-  fn exec(&self, f: &Vec<Token>, t: &mut Collection) {
+  fn exec(&self, s: &mut Value, f: &Vec<Token>, t: &mut Collection) {
     match self {
-      Self::FROM => Read.from_collection(f, t),
+      Self::FROM => Read.from_collection(s, f, t),
       _ => ()
     }
   }

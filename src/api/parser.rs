@@ -14,7 +14,7 @@ impl<'q> QueryParser<'q> {
     }
   }
 
-  pub fn build(self) -> Query<'q> {
+  pub fn build(self) -> Query {
     let mut actions: Vec<Action> = Vec::new();
     let mut _target: &mut Vec<Token> = &mut Vec::new();
 
@@ -35,7 +35,7 @@ impl<'q> QueryParser<'q> {
     }
 
     Query {
-      request: self.query,
+      request: self.query.to_string(),
       actions: actions
     }
   }
