@@ -46,6 +46,7 @@ impl Query {
       for modifier in action.modifiers {
         modifier.spec.exec(source, &modifier.filter, collection);
       }
+      
       action.verb.exec(source, &action.filter, collection);
     }
   }

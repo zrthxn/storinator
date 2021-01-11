@@ -26,12 +26,12 @@ async fn main() -> Result<()> {
 
 	HttpServer::new(move || {
 		App::new()
-			.wrap(Logger::default())
 			.app_data(web::Data::new(
 				DataStore {
 					store: Mutex::new(serde_json::from_str(&data).unwrap())
 				}
-			))
+			).clone())
+			.wrap(Logger::default())
 			.configure(router)
 	})
 		.bind((server.host, server.port))?

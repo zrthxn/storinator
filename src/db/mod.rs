@@ -24,19 +24,12 @@ impl Collection {
       val: value
     }
   }
-
-  // pub fn empty() -> Self {
-  //   Collection {
-  //     key: String::from_str("").unwrap(),
-  //     val: Value::from_str("{}").unwrap()
-  //   }
-  // }
 }
 
 pub fn execute(query: Query, store: &Mutex<Value>) -> Collection {
-  let data = &mut *store.lock().unwrap();
+  let mut data = &mut *store.lock().unwrap();
   let mut target = Collection::new("result", json!({}));
 
-  query.run(data, &mut target);
+  query.run(&mut data, &mut target);
   return target;
 }

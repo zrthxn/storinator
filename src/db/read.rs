@@ -7,15 +7,20 @@ use super::Collection;
 pub struct Read;
 
 impl Executable for Read {
-  fn exec(&self, src: &mut Value, keys: &Vec<Token>, tar: &mut Collection) {
-    tar.val = src["data"].clone();
+  fn exec(&self, _s: &mut Value, keys: &Vec<Token>, tar: &mut Collection) {
+    let index = keys[0].term();
+    if index != "ALL" {
+      tar.val = tar.val[index].clone();
+    }
   }
 }
 
 impl Read {
-  pub fn from_collection(&self, src: &mut Value, key: &Vec<Token>, tar: &mut Collection) {
-    if key.len() > 1 {
-      // Err("More than one values for `collection`");
+  pub fn from_collection(&self, src: &mut Value, keys: &Vec<Token>, tar: &mut Collection) {
+    let index = keys[0].term();
+    tar.val = src["data"].clone();
+    if index != "ALL" {
+      tar.val = tar.val[index].clone();
     }
   } 
 }
