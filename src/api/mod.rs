@@ -33,6 +33,7 @@ impl Modifier {
 }
 
 /// Query structure for DB interaction
+#[allow(dead_code)]
 pub struct Query {
   request: String,
   actions: Vec<Action>

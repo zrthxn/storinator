@@ -34,7 +34,7 @@ pub enum Specifier {
 }
 
 impl Executable for Specifier {
-  fn exec(&self, mut s: &mut Value, f: &Vec<Token>, t: &mut Collection) {
+  fn exec(&self, s: &mut Value, f: &Vec<Token>, t: &mut Collection) {
     match self {
       Self::FROM  => Read.from_collection(s, f, t),
       Self::TO    => Write.to_collection(s, f, t),

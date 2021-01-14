@@ -47,7 +47,7 @@ impl Write {
 pub struct Delete;
 
 impl Executable for Delete {
-  fn exec(&self, src: &mut Value, keys: &Vec<Token>, tar: &mut Collection) {
+  fn exec(&self, _src: &mut Value, _keys: &Vec<Token>, _t: &mut Collection) {
 
   }
 }
